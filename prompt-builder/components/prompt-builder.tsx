@@ -15,6 +15,7 @@ export function PromptBuilder() {
     const [selectedTech, setSelectedTech] = useState<string[]>([])
     const [customConstraints, setCustomConstraints] = useState<string[]>([])
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+    const [customExamples, setCustomExamples] = useState("")
 
     // Handlers
     const handleToggleTech = (tech: string) => {
@@ -66,10 +67,18 @@ export function PromptBuilder() {
         }
 
         // Examples section
-        if (uploadedFiles.length > 0) {
-            parts.push(`## 4. Examples\n**Uploaded Files:**\n${uploadedFiles.map(f => `- ${f.name}`).join('\n')}`)
+        if (uploadedFiles.length > 0 || customExamples.trim()) {
+            parts.push(`## 4. Examples`)
+
+            if (customExamples.trim()) {
+                parts.push(`**Manual Snippets:**\n${customExamples.trim()}`)
+            }
+
+            if (uploadedFiles.length > 0) {
+                parts.push(`**Uploaded Files:**\n${uploadedFiles.map(f => `- ${f.name}`).join('\n')}`)
+            }
         } else {
-            parts.push(`## 4. Examples\n(No examples provided yet. Upload files to add specific patterns.)`)
+            parts.push(`## 4. Examples\n(No examples provided yet. Upload files or paste snippets to add specific patterns.)`)
         }
 
         return parts.join('\n\n')
@@ -79,7 +88,7 @@ export function PromptBuilder() {
 
     useEffect(() => {
         setFinalPrompt(generatePrompt())
-    }, [persona, context, selectedTech, customConstraints, uploadedFiles])
+    }, [persona, context, selectedTech, customConstraints, uploadedFiles, customExamples])
 
 
     return (
@@ -117,6 +126,8 @@ export function PromptBuilder() {
                     uploadedFiles={uploadedFiles}
                     onFilesUpload={handleFilesUpload}
                     onFileRemove={handleFileRemove}
+                    customExamples={customExamples}
+                    onCustomExamplesChange={setCustomExamples}
                 />
 
             </div>

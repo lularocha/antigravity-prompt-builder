@@ -1,6 +1,7 @@
 "use client"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Textarea } from "./ui/textarea"
 import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
 import { Upload, FileText, BrainCircuit, X } from "lucide-react"
@@ -10,9 +11,17 @@ interface SectionExamplesProps {
     uploadedFiles: File[]
     onFilesUpload: (files: File[]) => void
     onFileRemove: (index: number) => void
+    customExamples: string
+    onCustomExamplesChange: (value: string) => void
 }
 
-export function SectionExamples({ uploadedFiles, onFilesUpload, onFileRemove }: SectionExamplesProps) {
+export function SectionExamples({
+    uploadedFiles,
+    onFilesUpload,
+    onFileRemove,
+    customExamples,
+    onCustomExamplesChange
+}: SectionExamplesProps) {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleUploadClick = () => {
@@ -58,6 +67,20 @@ export function SectionExamples({ uploadedFiles, onFilesUpload, onFileRemove }: 
                     </div>
                     <h4 className="text-sm font-medium mb-1">Upload Reference Files</h4>
                     <p className="text-xs text-muted-foreground">Images (PNG, JPG), PDFs, Code files, or Text files</p>
+                </div>
+
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Paste Code Snippets</span>
+                        <p className="text-sm text-muted-foreground">Demo usage or existing code patterns</p>
+                        <p className="text-sm text-white italic">E.g. Paste a snippet of your existing API response or a specific utility function...</p>
+                    </div>
+                    <Textarea
+                        placeholder="Paste your code or text examples here..."
+                        className="min-h-[120px] bg-black/20 border-white/10 resize-none focus-visible:ring-primary/50 font-mono text-xs"
+                        value={customExamples}
+                        onChange={(e) => onCustomExamplesChange(e.target.value)}
+                    />
                 </div>
 
                 {uploadedFiles.length > 0 && (
