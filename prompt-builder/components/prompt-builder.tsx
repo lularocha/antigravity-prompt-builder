@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useMemo } from "react"
 import { SectionPersona } from "./section-persona"
 import { SectionContext } from "./section-context"
 import { SectionConstraints } from "./section-constraints"
@@ -42,8 +42,8 @@ export function PromptBuilder() {
         setUploadedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    // Derived State: Generated Prompt
-    const generatePrompt = () => {
+    // Derived State: Generated Prompt (using useMemo to prevent hydration mismatch)
+    const finalPrompt = useMemo(() => {
         const parts = []
 
         if (persona.trim()) {
@@ -82,12 +82,6 @@ export function PromptBuilder() {
         }
 
         return parts.join('\n\n')
-    }
-
-    const [finalPrompt, setFinalPrompt] = useState("")
-
-    useEffect(() => {
-        setFinalPrompt(generatePrompt())
     }, [persona, context, selectedTech, customConstraints, uploadedFiles, customExamples])
 
 
