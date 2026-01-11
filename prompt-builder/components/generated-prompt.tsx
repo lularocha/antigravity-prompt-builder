@@ -19,13 +19,13 @@ export function GeneratedPrompt({ prompt }: GeneratedPromptProps) {
     }
 
     const handleDownload = () => {
-        const blob = new Blob([prompt], { type: 'text/plain' })
+        const blob = new Blob([prompt], { type: 'text/markdown' })
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
         const filename = promptTitle.trim()
-            ? `${promptTitle.trim().replace(/[^a-z0-9]/gi, '-').toLowerCase()}-prompt.txt`
-            : 'generated-prompt.txt'
+            ? `${promptTitle.trim().replace(/[^a-z0-9]/gi, '-').toLowerCase()}-prompt.md`
+            : 'generated-prompt.md'
         a.download = filename
         document.body.appendChild(a)
         a.click()
