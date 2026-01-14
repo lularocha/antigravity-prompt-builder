@@ -13,7 +13,7 @@ interface SectionConstraintsProps {
     onRemoveConstraint: (index: number) => void
 }
 
-const PRESET_TECH = ["Next.js", "React", "Vue", "Tailwind CSS", "Vanilla JS", "TypeScript", "Node.js", "Python"]
+const PRESET_TECH = ["HTML", "CSS", "Vanilla JS", "TypeScript", "React", "Vue", "Next.js", "Tailwind CSS", "Node.js", "Python"]
 
 export function SectionConstraints({
     selectedTech,
