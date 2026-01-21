@@ -44,7 +44,10 @@ export function SectionExamples({
         <Card className="glass-panel border-0 bg-opacity-50">
             <CardHeader>
                 <CardTitle className="text-xl">4. Examples</CardTitle>
-                <CardDescription>Show, don't tell - Upload files or paste code snippets to demonstrate usage.</CardDescription>
+                <CardDescription>
+                    Show, don't tell - Upload files or paste code snippets to demonstrate usage.
+                    <span className="block text-white italic mt-1">Note: Automatic extraction of patterns from visual files (images, screenshots) is not yet implemented.</span>
+                </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
 
@@ -70,9 +73,9 @@ export function SectionExamples({
 
                 <div className="space-y-3">
                     <div className="flex flex-col gap-1">
-                        <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Paste Code Snippets</span>
-                        <p className="text-sm text-muted-foreground">Demo usage or existing code patterns</p>
-                        <p className="text-sm text-white italic">E.g. Paste a snippet of your existing API response or a specific utility function...</p>
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Paste Code Snippets</span>
+                        <span className="block text-sm text-muted-foreground">Demo usage or existing code patterns.</span>
+                        <span className="block text-sm text-white italic">E.g. Paste a snippet of your existing API response or a specific utility function...</span>
                     </div>
                     <Textarea
                         placeholder="Paste your code or text examples here..."
@@ -86,7 +89,7 @@ export function SectionExamples({
                     <div className="space-y-2">
                         <h4 className="text-sm font-medium text-muted-foreground">Uploaded Files:</h4>
                         {uploadedFiles.map((file, index) => (
-                            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-black/20 border border-white/5 group">
+                            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-black/20 group">
                                 <div className="flex items-center gap-2">
                                     <FileText className="w-4 h-4 text-primary" />
                                     <span className="text-sm text-gray-300">{file.name}</span>
@@ -103,22 +106,36 @@ export function SectionExamples({
                     </div>
                 )}
 
-                <div className="p-4 rounded-lg bg-blue-500/5 border border-blue-500/10 flex gap-3">
+                {/*
+                    Badge states (for future implementation):
+                    - idle: bg-gray-600 text-white
+                    - analyzing: bg-yellow-500 text-black
+                    - complete: bg-green-600 text-white
+                    - error: bg-red-600 text-white
+                */}
+                <Badge variant="secondary" className="bg-gray-600 text-white border-0 w-fit">
+                    <BrainCircuit className="w-3 h-3 mr-1" />
+                    AI Analysis Idle
+                </Badge>
+
+                <div className="p-4 rounded-lg bg-blue-500/5 flex gap-3">
                     <div className="shrink-0 mt-0.5">
                         <BrainCircuit className="w-5 h-5 text-blue-400" />
                     </div>
                     <div className="space-y-1">
                         <h4 className="text-sm font-medium text-blue-300">Agent Analysis</h4>
                         <p className="text-xs text-blue-200/60">
-                            Upload an example to have the agent extract patterns and suggest improvements automatically.
+                            Upload an example to have the agent extract patterns and suggest improvements.
                         </p>
                     </div>
                 </div>
 
-                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 w-fit">
-                    <BrainCircuit className="w-3 h-3 mr-1" />
-                    AI Analysis Ready
-                </Badge>
+                <div className="p-4 rounded-lg bg-white/5 space-y-3">
+                    <h4 className="text-sm font-bold text-white">Visual Context:</h4>
+                    <p className="text-sm text-muted-foreground font-normal italic">
+                        Suggestions will appear here once AI analysis is implemented. The agent will extract patterns from uploaded images and offer recommendations for Context, Persona, and Tech Stack.
+                    </p>
+                </div>
 
             </CardContent>
         </Card>

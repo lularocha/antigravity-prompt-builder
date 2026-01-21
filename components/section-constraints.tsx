@@ -35,19 +35,18 @@ export function SectionConstraints({
         <Card className="glass-panel border-0 bg-opacity-50">
             <CardHeader>
                 <CardTitle className="text-xl">3. Constraints & Tech Stack</CardTitle>
-                <CardDescription>Define the boundaries and technologies by selecting the options below and defining your custom constraints</CardDescription>
+                <CardDescription>Define the boundaries and technologies by selecting the options below and defining your custom constraints.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
 
                 {/* Tech Stack */}
                 <div className="space-y-3">
-                    <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Tech Stack</span>
+                    <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Tech Stack</span>
                     <div className="flex flex-wrap gap-2">
                         {PRESET_TECH.map((tech) => (
                             <Badge
                                 key={tech}
-                                variant={selectedTech.includes(tech) ? "default" : "outline"}
-                                className={`cursor-pointer transition-all ${selectedTech.includes(tech) ? 'bg-primary/20 text-primary border-primary/50 hover:bg-primary/30' : 'hover:border-primary/50'}`}
+                                className={`cursor-pointer transition-all ${selectedTech.includes(tech) ? 'bg-[#4242f8] text-white hover:bg-[#5555ff]' : 'bg-white/10 hover:bg-white/30'}`}
                                 onClick={() => onToggleTech(tech)}
                             >
                                 {tech}
@@ -59,9 +58,9 @@ export function SectionConstraints({
                 {/* Custom Constraints */}
                 <div className="space-y-3">
                     <div className="flex flex-col gap-1">
-                        <span className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Custom Constraints</span>
-                        <p className="text-sm text-muted-foreground">Set limitations and/or define requirements</p>
-                        <p className="text-sm text-white italic">E.g. Keep responses under 200 words, avoid deprecated methods and use local storage for persistence</p>
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Custom Constraints</span>
+                        <span className="block text-sm text-muted-foreground">Set limitations and/or define requirements.</span>
+                        <span className="block text-sm text-white italic">E.g. Keep responses under 200 words, avoid deprecated methods and use local storage for persistence.</span>
                     </div>
                     <div className="flex gap-2">
                         <Input
@@ -71,14 +70,14 @@ export function SectionConstraints({
                             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
                             className="focus-visible:ring-primary/50"
                         />
-                        <Button onClick={handleAdd} size="icon" variant="secondary" className="bg-white/5 border border-white/10 hover:bg-white/10 shrink-0">
+                        <Button onClick={handleAdd} size="icon" variant="secondary" className="bg-white/5 hover:bg-white/10 shrink-0">
                             <Plus className="w-4 h-4" />
                         </Button>
                     </div>
 
                     <div className="space-y-2 mt-2">
                         {customConstraints.map((constraint, index) => (
-                            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-black/20 border border-white/5 group">
+                            <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-black/20 group">
                                 <span className="text-sm text-gray-300">{constraint}</span>
                                 <button
                                     onClick={() => onRemoveConstraint(index)}

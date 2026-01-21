@@ -17,9 +17,9 @@ export function SectionPersona({ value, onChange }: SectionPersonaProps) {
         <Card className="glass-panel border-0 bg-opacity-50">
             <CardHeader>
                 <CardTitle className="text-xl">2. Persona</CardTitle>
-                <CardDescription className="space-y-2">
-                    <div>Define the AI's role, expertise, and perspective.</div>
-                    <div className="text-sm text-white italic">E.g. You are an expert full-stack developer with 10+ years of experience in React and Node.js...</div>
+                <CardDescription>
+                    Define the AI's role, expertise, and perspective.
+                    <span className="block text-white italic mt-1">E.g. You are an expert full-stack developer with 10+ years of experience in React and Node.js...</span>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
