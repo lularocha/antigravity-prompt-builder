@@ -43,13 +43,7 @@ export function SectionExamples({
     return (
         <Card className="glass-panel border-0 bg-opacity-50">
             <CardHeader>
-                <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl">4. Examples (Show, don't tell)</CardTitle>
-                    <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20">
-                        <BrainCircuit className="w-3 h-3 mr-1" />
-                        AI Analysis Ready
-                    </Badge>
-                </div>
+                <CardTitle className="text-xl">4. Examples (Show, don't tell)</CardTitle>
                 <CardDescription>Upload files or paste code snippets to demonstrate usage.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -120,6 +114,11 @@ export function SectionExamples({
                         </p>
                     </div>
                 </div>
+
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 w-fit">
+                    <BrainCircuit className="w-3 h-3 mr-1" />
+                    AI Analysis Ready
+                </Badge>
 
             </CardContent>
         </Card>

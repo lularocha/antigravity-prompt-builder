@@ -20,15 +20,7 @@ export default function Home() {
 
                 {/* Footer */}
                 <footer className="text-center text-sm text-muted-foreground mt-4 pb-8">
-                    Created by Lula Rocha |{" "}
-                    <a
-                        href="https://sugiro.io/ia/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-400 hover:underline transition-colors font-inherit"
-                    >
-                        sugiro.io
-                    </a>
+                    Created by Lula Rocha + Claude
                 </footer>
 
             </div>
