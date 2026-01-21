@@ -6,12 +6,15 @@ export default function Home() {
             <div className="w-full max-w-7xl z-10 flex flex-col gap-12">
 
                 {/* Header */}
-                <div className="text-center space-y-4">
-                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
+                <div className="text-left space-y-4">
+                    <h1 className="text-4xl md:text-6xl font-bold tracking-tighter text-white">
                         Prompt Builder
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-[1200px] mx-auto">
+                    <p className="text-lg text-muted-foreground max-w-[1200px]">
                         Create high-quality AI prompts with the strategy: Persona + Context + Constraints & Tech + Examples.
+                    </p>
+                    <p className="text-sm text-white italic !mt-1">
+                        (AI features that require API were not implemented yet)
                     </p>
                 </div>
 
@@ -19,8 +22,20 @@ export default function Home() {
                 <PromptBuilder />
 
                 {/* Footer */}
-                <footer className="text-center text-sm text-muted-foreground mt-4 pb-8">
-                    Created by Lula Rocha + Claude
+                <footer className="text-center text-sm text-muted-foreground mt-4 pb-8 space-y-2">
+                    <div className="font-bold">Created by Lula Rocha + Claude</div>
+                    <div>
+                        Claude has an AI powered{" "}
+                        <a
+                            href="https://platform.claude.com/dashboard"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:text-blue-400 hover:underline transition-colors"
+                        >
+                            Prompt Tool
+                        </a>
+                        {" "}in the Developer Platform (requires API account with credits).
+                    </div>
                 </footer>
 
             </div>
