@@ -43,8 +43,8 @@ export function SectionExamples({
     return (
         <Card className="glass-panel border-0 bg-opacity-50">
             <CardHeader>
-                <CardTitle className="text-xl">4. Examples (Show, don't tell)</CardTitle>
-                <CardDescription>Upload files or paste code snippets to demonstrate usage.</CardDescription>
+                <CardTitle className="text-xl">4. Examples</CardTitle>
+                <CardDescription>Show, don't tell - Upload files or paste code snippets to demonstrate usage.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
 

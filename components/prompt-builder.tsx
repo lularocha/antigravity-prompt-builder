@@ -52,17 +52,23 @@ export function PromptBuilder() {
     const finalPrompt = useMemo(() => {
         const parts = []
 
+        // Section 1: Persona
         if (persona.trim()) {
             parts.push(`## 1. Persona\n${persona.trim()}`)
+        } else {
+            parts.push(`## 1. Persona\n(No information provided yet)`)
         }
 
+        // Section 2: Context
         if (context.trim()) {
             parts.push(`## 2. Context\n${context.trim()}`)
+        } else {
+            parts.push(`## 2. Context\n(No information provided yet)`)
         }
 
+        // Section 3: Constraints & Tech Stack
         if (selectedTech.length > 0 || customConstraints.length > 0) {
             parts.push(`## 3. Constraints & Tech Stack`)
-
             if (selectedTech.length > 0) {
                 parts.push(`**Tech Stack:**\n${selectedTech.map(t => `- ${t}`).join('\n')}`)
             }
@@ -70,12 +76,13 @@ export function PromptBuilder() {
             if (customConstraints.length > 0) {
                 parts.push(`**Requirements:**\n${customConstraints.map(c => `- ${c}`).join('\n')}`)
             }
+        } else {
+            parts.push(`## 3. Constraints & Tech Stack\n(No information provided yet)`)
         }
 
-        // Examples section
+        // Section 4: Examples
         if (uploadedFiles.length > 0 || customExamples.trim()) {
             parts.push(`## 4. Examples`)
-
             if (customExamples.trim()) {
                 parts.push(`**Manual Snippets:**\n${customExamples.trim()}`)
             }
@@ -84,7 +91,7 @@ export function PromptBuilder() {
                 parts.push(`**Uploaded Files:**\n${uploadedFiles.map(f => `- ${f.name}`).join('\n')}`)
             }
         } else {
-            parts.push(`## 4. Examples\n(No examples provided yet. Upload files or paste snippets to add specific patterns.)`)
+            parts.push(`## 4. Examples\n(No information provided yet)`)
         }
 
         return parts.join('\n\n')
@@ -101,7 +108,7 @@ export function PromptBuilder() {
                     <div className="p-2 bg-primary/20 rounded-lg">
                         <Sparkles className="w-5 h-5 text-primary" />
                     </div>
-                    <h2 className="text-xl font-semibold tracking-tight">Builder Configuration</h2>
+                    <h2 className="text-xl font-bold tracking-tight">Builder Configuration</h2>
                 </div>
 
                 <SectionPersona
@@ -139,7 +146,7 @@ export function PromptBuilder() {
                     <div className="p-2 bg-primary/20 rounded-lg">
                         <Sparkles className="w-5 h-5 text-primary" />
                     </div>
-                    <h2 className="text-xl font-semibold tracking-tight">Output</h2>
+                    <h2 className="text-xl font-bold tracking-tight">Output</h2>
                 </div>
 
                 <GeneratedPrompt prompt={finalPrompt} />
