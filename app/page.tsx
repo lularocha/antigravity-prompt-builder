@@ -14,7 +14,7 @@ export default function Home() {
                         Create high-quality AI prompts with the strategy: Persona + Context + Constraints & Tech + Examples.
                     </p>
                     <p className="text-sm text-white italic !mt-1">
-                        (AI features that require API were not implemented yet)
+                        AI features that require API were not implemented yet.
                     </p>
                 </div>
 
