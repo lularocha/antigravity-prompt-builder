@@ -54,7 +54,7 @@ export function SectionContext({ value, onChange }: SectionContextProps) {
             <CardContent className="space-y-3">
                 <Textarea
                     placeholder="E.g. I want to build a responsive admin dashboard for a SaaS platform using Next.js..."
-                    className="min-h-[120px] bg-black/20 border-white/10 resize-none focus-visible:ring-primary/50"
+                    className="min-h-[120px] resize-none focus-visible:ring-primary/50"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                 />

@@ -69,7 +69,7 @@ export function SectionConstraints({
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-                            className="bg-black/20 border-white/10 focus-visible:ring-primary/50"
+                            className="focus-visible:ring-primary/50"
                         />
                         <Button onClick={handleAdd} size="icon" variant="secondary" className="bg-white/5 border border-white/10 hover:bg-white/10 shrink-0">
                             <Plus className="w-4 h-4" />

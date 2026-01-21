@@ -19,7 +19,7 @@ export function SectionPersona({ value, onChange }: SectionPersonaProps) {
             <CardContent>
                 <Textarea
                     placeholder="E.g. You are an expert full-stack developer with 10+ years of experience in React and Node.js..."
-                    className="min-h-[100px] bg-black/20 border-white/10 resize-none focus-visible:ring-primary/50"
+                    className="min-h-[100px] resize-none focus-visible:ring-primary/50"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                 />

@@ -63,10 +63,12 @@ export function GeneratedPrompt({ prompt }: GeneratedPromptProps) {
                     placeholder="Name your prompt"
                     value={promptTitle}
                     onChange={(e) => setPromptTitle(e.target.value)}
-                    className="bg-black/20 border-white/10 focus-visible:ring-primary/50"
+                    className="focus-visible:ring-primary/50"
                 />
-                <div className="h-full w-full rounded-md bg-black/50 p-4 border border-white/10 overflow-auto font-mono text-sm leading-relaxed text-gray-300">
-                    <pre className="whitespace-pre-wrap">{prompt || "Complete the sections on the left to generate your prompt..."}</pre>
+                <div className="h-full w-full rounded-md bg-[#000085] p-4 overflow-auto font-mono text-sm leading-relaxed text-white">
+                    <pre className="whitespace-pre-wrap">
+{prompt ? `# ${promptTitle.trim() || "Generated Prompt"}\n\n${prompt}` : "Complete the sections on the left to generate your prompt..."}
+                    </pre>
                 </div>
             </CardContent>
         </Card>
