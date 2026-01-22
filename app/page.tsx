@@ -17,7 +17,7 @@ export default function Home() {
                         AI features that require API were not implemented yet.
                     </p>
                     <p className="text-sm text-[#ffaa00] !mt-2">
-                        Last updated: January 22, 2026
+                        Latest update: January 22, 2026
                     </p>
                 </div>
 
@@ -33,7 +33,7 @@ export default function Home() {
                             href="https://platform.claude.com/dashboard"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-500 hover:text-blue-400 hover:underline transition-colors"
+                            className="text-blue-500 hover:text-blue-400 hover:underline transition-colors font-bold"
                         >
                             Prompt Tool
                         </a>
