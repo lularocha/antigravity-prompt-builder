@@ -137,7 +137,7 @@ export function PromptBuilder() {
             <div className="space-y-6 overflow-y-auto pr-2 custom-scrollbar">
 
                 <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-primary/20 rounded-lg flex items-center">
+                    <div className="p-0 bg-primary/20 rounded-lg flex items-center">
                         <span className="material-icons text-white rotate-90 leading-none" style={{ fontSize: '32px', verticalAlign: 'baseline' }}>arrow_outward</span>
                     </div>
                     <h2 className="text-[1.75rem] font-bold tracking-tight leading-none">Input</h2>
@@ -177,7 +177,7 @@ export function PromptBuilder() {
             <div className="lg:sticky lg:top-8 h-fit space-y-6">
 
                 <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-primary/20 rounded-lg flex items-center">
+                    <div className="p-0 bg-primary/20 rounded-lg flex items-center">
                         <span className="material-icons text-white leading-none" style={{ fontSize: '32px', verticalAlign: 'baseline' }}>arrow_outward</span>
                     </div>
                     <h2 className="text-[1.75rem] font-bold tracking-tight leading-none">Output</h2>
