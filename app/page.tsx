@@ -16,6 +16,9 @@ export default function Home() {
                     <p className="text-sm text-white italic !mt-1">
                         AI features that require API were not implemented yet.
                     </p>
+                    <p className="text-sm text-[#ffaa00] !mt-2">
+                        Last updated: January 22, 2026
+                    </p>
                 </div>
 
                 {/* Builder Interface */}

@@ -122,12 +122,23 @@ export function SectionExamples({
                             </Badge>
                         )}
                     </div>
-                    <div className="text-sm text-white">
-                        Upload examples to have the agent extract patterns and suggest improvements for Context, Persona, and Tech Stack.
-                    </div>
-                    <div className="text-sm text-muted-foreground italic">
-                        Suggestions will appear here once AI analysis is implemented.
-                    </div>
+                    {!visualContextSuggestions && (
+                        <>
+                            <div className="text-sm text-white">
+                                Upload examples to have the agent extract patterns and suggest improvements for Context, Persona, and Tech Stack.
+                            </div>
+                            <div className="text-sm text-muted-foreground italic">
+                                Suggestions will appear here once AI analysis is completed.
+                            </div>
+                        </>
+                    )}
+                    {visualContextSuggestions && (
+                        <>
+                            <div className="text-sm text-white font-medium">
+                                Suggestions based on the examples provided:
+                            </div>
+                        </>
+                    )}
                     {visualContextSuggestions && (
                         <div className="space-y-4 pt-2">
                             <div>
@@ -153,6 +164,11 @@ export function SectionExamples({
                                         <li key={i}>• {s}</li>
                                     ))}
                                 </ul>
+                            </div>
+                            <div className="pt-3 mt-3 border-t border-white/10">
+                                <p className="text-sm text-white italic">
+                                    Note: Displaying sample data for demonstration. Real AI analysis functionality is not yet implemented.
+                                </p>
                             </div>
                         </div>
                     )}
