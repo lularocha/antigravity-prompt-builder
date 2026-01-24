@@ -58,7 +58,7 @@ npm run dev
 npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open the localhost URL shown in your terminal.
 
 ## Status
 
