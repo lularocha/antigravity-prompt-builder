@@ -46,11 +46,11 @@ prompt-builder/
 
 | Component | Features |
 |-----------|----------|
-| `prompt-builder.tsx` | State management for all sections, prompt assembly |
+| `prompt-builder.tsx` | State management for all sections, prompt assembly, suggestion checkbox handlers |
 | `section-persona.tsx` | Textarea + "Make it specific" button (mockup) |
 | `section-context.tsx` | Textarea + dictionary-based enhancement |
 | `section-constraints.tsx` | Tech stack badges + custom constraints |
-| `section-examples.tsx` | File upload + code snippets + Agent Analysis UI |
+| `section-examples.tsx` | File upload + code snippets + Agent Analysis UI with interactive suggestion checkboxes |
 | `generated-prompt.tsx` | Formatted output + copy/download buttons |
 
 ---
@@ -65,3 +65,9 @@ prompt-builder/
 - Tech stack selector with presets
 - Responsive design (mobile-friendly)
 - Placeholder UI for future AI features
+- Interactive suggestion system:
+  - Mock AI suggestions grouped by Context, Persona, and Tech Stack
+  - Checkbox selection for each suggestion
+  - Auto-population of corresponding cards when checked
+  - Duplicate prevention when adding suggestions
+  - Automatic removal from cards when unchecked

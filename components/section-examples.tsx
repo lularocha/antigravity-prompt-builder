@@ -25,6 +25,12 @@ interface SectionExamplesProps {
     onCustomExamplesChange: (value: string) => void
     analysisStatus: 'idle' | 'analyzing' | 'complete'
     visualContextSuggestions: VisualContextSuggestions | null
+    selectedSuggestions: {
+        context: Set<number>
+        persona: Set<number>
+        techStack: Set<number>
+    }
+    onToggleSuggestion: (category: 'context' | 'persona' | 'techStack', index: number, suggestion: string) => void
 }
 
 export function SectionExamples({
@@ -34,7 +40,9 @@ export function SectionExamples({
     customExamples,
     onCustomExamplesChange,
     analysisStatus,
-    visualContextSuggestions
+    visualContextSuggestions,
+    selectedSuggestions,
+    onToggleSuggestion
 }: SectionExamplesProps) {
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -142,28 +150,52 @@ export function SectionExamples({
                     {visualContextSuggestions && (
                         <div className="space-y-4 pt-2">
                             <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">Context</h5>
-                                <ul className="text-sm text-muted-foreground space-y-1">
+                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Context</h5>
+                                <div className="space-y-2">
                                     {visualContextSuggestions.context.map((s, i) => (
-                                        <li key={i}>• {s}</li>
+                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedSuggestions.context.has(i)}
+                                                onChange={() => onToggleSuggestion('context', i, s)}
+                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                            />
+                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                        </label>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                             <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">Persona</h5>
-                                <ul className="text-sm text-muted-foreground space-y-1">
+                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Persona</h5>
+                                <div className="space-y-2">
                                     {visualContextSuggestions.persona.map((s, i) => (
-                                        <li key={i}>• {s}</li>
+                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedSuggestions.persona.has(i)}
+                                                onChange={() => onToggleSuggestion('persona', i, s)}
+                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                            />
+                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                        </label>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                             <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-1">Tech Stack</h5>
-                                <ul className="text-sm text-muted-foreground space-y-1">
+                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Tech Stack</h5>
+                                <div className="space-y-2">
                                     {visualContextSuggestions.techStack.map((s, i) => (
-                                        <li key={i}>• {s}</li>
+                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedSuggestions.techStack.has(i)}
+                                                onChange={() => onToggleSuggestion('techStack', i, s)}
+                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                            />
+                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                        </label>
                                     ))}
-                                </ul>
+                                </div>
                             </div>
                             <div className="pt-3 mt-3 border-t border-white/10">
                                 <p className="text-sm text-white italic">

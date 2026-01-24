@@ -45,6 +45,15 @@ export function PromptBuilder() {
     const [customExamples, setCustomExamples] = useState("")
     const [analysisStatus, setAnalysisStatus] = useState<'idle' | 'analyzing' | 'complete'>('idle')
     const [visualContextSuggestions, setVisualContextSuggestions] = useState<VisualContextSuggestions | null>(null)
+    const [selectedSuggestions, setSelectedSuggestions] = useState<{
+        context: Set<number>
+        persona: Set<number>
+        techStack: Set<number>
+    }>({
+        context: new Set(),
+        persona: new Set(),
+        techStack: new Set()
+    })
 
     // Handlers
     const handleToggleTech = (tech: string) => {
@@ -79,6 +88,71 @@ export function PromptBuilder() {
 
     const handleFileRemove = (index: number) => {
         setUploadedFiles(prev => prev.filter((_, i) => i !== index))
+    }
+
+    const handleToggleSuggestion = (category: 'context' | 'persona' | 'techStack', index: number, suggestion: string) => {
+        setSelectedSuggestions(prev => {
+            const newSet = new Set(prev[category])
+            const isSelected = newSet.has(index)
+
+            if (isSelected) {
+                newSet.delete(index)
+                // Remove suggestion from corresponding field
+                if (category === 'context') {
+                    setContext(prevContext => {
+                        const lines = prevContext.split('\n').filter(line => line.trim() !== suggestion.trim())
+                        return lines.join('\n')
+                    })
+                } else if (category === 'persona') {
+                    setPersona(prevPersona => {
+                        const lines = prevPersona.split('\n').filter(line => line.trim() !== suggestion.trim())
+                        return lines.join('\n')
+                    })
+                } else if (category === 'techStack') {
+                    // Check if it's a preset tech or custom constraint
+                    const PRESET_TECH = ["HTML", "CSS", "Vanilla JS", "TypeScript", "React", "Vue", "Next.js", "Tailwind CSS", "Node.js", "Python"]
+                    if (PRESET_TECH.includes(suggestion)) {
+                        setSelectedTech(prev => prev.filter(t => t !== suggestion))
+                    } else {
+                        setCustomConstraints(prev => prev.filter(c => c !== suggestion))
+                    }
+                }
+            } else {
+                newSet.add(index)
+                // Add suggestion to corresponding field
+                if (category === 'context') {
+                    setContext(prevContext => {
+                        const trimmed = prevContext.trim()
+                        // Check if suggestion already exists to prevent duplicates
+                        const lines = trimmed.split('\n').map(l => l.trim())
+                        if (lines.includes(suggestion.trim())) {
+                            return trimmed
+                        }
+                        return trimmed ? `${trimmed}\n${suggestion}` : suggestion
+                    })
+                } else if (category === 'persona') {
+                    setPersona(prevPersona => {
+                        const trimmed = prevPersona.trim()
+                        // Check if suggestion already exists to prevent duplicates
+                        const lines = trimmed.split('\n').map(l => l.trim())
+                        if (lines.includes(suggestion.trim())) {
+                            return trimmed
+                        }
+                        return trimmed ? `${trimmed}\n${suggestion}` : suggestion
+                    })
+                } else if (category === 'techStack') {
+                    // Check if it's a preset tech or custom constraint
+                    const PRESET_TECH = ["HTML", "CSS", "Vanilla JS", "TypeScript", "React", "Vue", "Next.js", "Tailwind CSS", "Node.js", "Python"]
+                    if (PRESET_TECH.includes(suggestion)) {
+                        setSelectedTech(prev => prev.includes(suggestion) ? prev : [...prev, suggestion])
+                    } else {
+                        setCustomConstraints(prev => prev.includes(suggestion) ? prev : [...prev, suggestion])
+                    }
+                }
+            }
+
+            return { ...prev, [category]: newSet }
+        })
     }
 
     // Derived State: Generated Prompt (using useMemo to prevent hydration mismatch)
@@ -170,6 +244,8 @@ export function PromptBuilder() {
                     onCustomExamplesChange={setCustomExamples}
                     analysisStatus={analysisStatus}
                     visualContextSuggestions={visualContextSuggestions}
+                    selectedSuggestions={selectedSuggestions}
+                    onToggleSuggestion={handleToggleSuggestion}
                 />
 
             </div>

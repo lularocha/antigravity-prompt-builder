@@ -15,6 +15,7 @@ This document tracks the implementation status and future roadmap for the Prompt
 - **Code Snippets**: Textarea for pasting example code
 - **Tech Stack Selector**: Preset options and custom constraint badges
 - **Basic "Make it Specific" (Context)**: Dictionary-based keyword enhancement
+- **Agent Suggestions UI**: Interactive checkboxes for mock AI suggestions with automatic card population
 
 ### UI Placeholders (Not Functional)
 These elements exist in the UI but have no backend implementation:
@@ -22,7 +23,7 @@ These elements exist in the UI but have no backend implementation:
 | Element | Location | Current Behavior |
 |---------|----------|------------------|
 | "Make it Specific" button | Persona section | Does nothing (mockup) |
-| "Agent Analysis" info box | Examples section | Static informational text |
+| "Agent Analysis" info box | Examples section | Shows mock suggestions with interactive checkboxes |
 | "AI Analysis Ready" badge | Examples section | Static badge display |
 
 ---
@@ -89,7 +90,7 @@ These elements exist in the UI but have no backend implementation:
 ---
 
 ### Feature 4: Agent Analysis (Multimodal Vision)
-**Status**: UI Placeholder Only
+**Status**: UI Complete with Mock Data
 **Complexity**: High (requires Vision API)
 
 **Goal**: Automatically analyze uploaded design screenshots/wireframes to extract visual context.
@@ -102,15 +103,22 @@ These elements exist in the UI but have no backend implementation:
 5. Includes analysis in the generated prompt
 
 **Current State**:
-- The blue "Agent Analysis" info box and "AI Analysis Ready" badge are **static UI elements**
-- They indicate the feature is designed but awaiting implementation
-- No image processing or AI calls occur
+- The blue "Agent Analysis" info box displays mock suggestions in three categories: Context, Persona, and Tech Stack
+- Users can check/uncheck suggestion checkboxes to add/remove them from corresponding cards
+- Checked suggestions automatically populate:
+  - Context suggestions → Context textarea
+  - Persona suggestions → Persona textarea
+  - Tech Stack suggestions → Tech badges or custom constraints
+- Prevents duplicate entries when adding suggestions
+- The "AI Analysis Ready" badge shows analysis state (Idle → Analyzing → Complete)
+- Uses mock data for demonstration (4.5 second simulated analysis delay)
+- No actual image processing or AI calls occur
 
 **Implementation Required**:
 1. Create `app/api/analyze-image/route.ts`
-2. Integrate Vision-capable model
-3. Add "Scanning..." loading animation
-4. Parse and display analysis results
+2. Integrate Vision-capable model (e.g., GPT-4 Vision, Gemini 1.5 Pro)
+3. Replace mock suggestions with real AI-generated analysis
+4. Parse and display real analysis results
 
 ---
 
