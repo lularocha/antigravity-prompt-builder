@@ -41,11 +41,13 @@ body {
 }
 
 input[type="checkbox"].checkbox-blue {
-  accent-color: #7fa9db;
-  background-color: transparent;
+  accent-color: #7fa9db !important;
+  background-color: transparent !important;
+  appearance: auto !important;
 }
 
 input[type="checkbox"].checkbox-blue:checked {
-  background-color: #7fa9db;
-  border-color: #7fa9db;
+  accent-color: #7fa9db !important;
+  background-color: #7fa9db !important;
+  border-color: #7fa9db !important;
 }
