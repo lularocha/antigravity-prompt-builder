@@ -46,12 +46,11 @@ export function SectionContext({ value, onChange }: SectionContextProps) {
                 <CardTitle className="text-xl">1. Context</CardTitle>
                 <CardDescription>
                     Describe what you are building, the problem, and the goal.
-                    <span className="block text-white italic mt-1">E.g. I want to build a responsive admin dashboard for a SaaS platform using Next.js...</span>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
                 <Textarea
-                    placeholder="E.g. I want to build a responsive admin dashboard for a SaaS platform using Next.js..."
+                    placeholder="I want to build a responsive admin dashboard for a SaaS platform using Next.js..."
                     className="min-h-[120px] resize-none focus-visible:ring-primary/50"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}

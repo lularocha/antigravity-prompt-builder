@@ -60,11 +60,10 @@ export function SectionConstraints({
                     <div className="flex flex-col gap-1">
                         <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Custom Constraints</span>
                         <span className="block text-sm text-muted-foreground">Set limitations and/or define requirements.</span>
-                        <span className="block text-sm text-white italic">E.g. Keep responses under 200 words, avoid deprecated methods and use local storage for persistence.</span>
                     </div>
                     <div className="flex gap-2">
                         <Input
-                            placeholder="E.g. Use localStorage for persistence..."
+                            placeholder="Use localStorage for persistence..."
                             value={inputValue}
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleAdd()}

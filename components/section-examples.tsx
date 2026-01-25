@@ -205,7 +205,6 @@ export function SectionExamples({
                     <div className="flex flex-col gap-1">
                         <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mt-12 block">Paste Code Snippets</span>
                         <span className="block text-sm text-muted-foreground">Demo usage or existing code patterns.</span>
-                        <span className="block text-sm text-white italic">E.g. Paste a snippet of your existing API response or a specific utility function...</span>
                     </div>
                     <Textarea
                         placeholder="Paste your code or text examples here..."
