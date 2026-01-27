@@ -1,0 +1,76 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Textarea } from "./ui/textarea"
+
+interface SectionUserPromptProps {
+    task: string
+    onTaskChange: (value: string) => void
+    requirements: string
+    onRequirementsChange: (value: string) => void
+    tech: string
+    onTechChange: (value: string) => void
+}
+
+export function SectionUserPrompt({
+    task,
+    onTaskChange,
+    requirements,
+    onRequirementsChange,
+    tech,
+    onTechChange
+}: SectionUserPromptProps) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-xl">2. User Prompt</CardTitle>
+                <CardDescription>
+                    Define the specific task, requirements, and technologies.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+
+                {/* Task */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Task</span>
+                        <span className="block text-sm text-muted-foreground">Tell AI what you want to build.</span>
+                    </div>
+                    <Textarea
+                        placeholder="Build a responsive admin dashboard for a SaaS platform..."
+                        className="min-h-[100px] resize-none focus-visible:ring-primary/50"
+                        value={task}
+                        onChange={(e) => onTaskChange(e.target.value)}
+                    />
+                </div>
+
+                {/* Requirements */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Requirements</span>
+                        <span className="block text-sm text-muted-foreground">List functional specifications, features, and behavior.</span>
+                    </div>
+                    <Textarea
+                        placeholder="- Display real-time analytics&#10;- User authentication with role-based access&#10;- Dark mode support"
+                        className="min-h-[100px] resize-none focus-visible:ring-primary/50"
+                        value={requirements}
+                        onChange={(e) => onRequirementsChange(e.target.value)}
+                    />
+                </div>
+
+                {/* Tech */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Tech</span>
+                        <span className="block text-sm text-muted-foreground">List stack, frameworks, libraries, APIs.</span>
+                    </div>
+                    <Textarea
+                        placeholder="React, Next.js, Tailwind CSS, Prisma, PostgreSQL"
+                        className="min-h-[80px] resize-none focus-visible:ring-primary/50"
+                        value={tech}
+                        onChange={(e) => onTechChange(e.target.value)}
+                    />
+                </div>
+
+            </CardContent>
+        </Card>
+    )
+}

@@ -2,9 +2,8 @@
 
 import { useState, useMemo } from "react"
 import { ArrowUpRight, ArrowDownRight } from "lucide-react"
-import { SectionPersona } from "./section-persona"
-import { SectionContext } from "./section-context"
-import { SectionConstraints } from "./section-constraints"
+import { SectionSystemPrompt } from "./section-system-prompt"
+import { SectionUserPrompt } from "./section-user-prompt"
 import { SectionExamples } from "./section-examples"
 import { GeneratedPrompt } from "./generated-prompt"
 
@@ -14,48 +13,35 @@ interface FileMetadata {
 }
 
 interface VisualContextSuggestions {
-    context: string[]
     persona: string[]
-    techStack: string[]
+    constraints: string[]
+    task: string[]
+    requirements: string[]
+    tech: string[]
 }
+
+type SuggestionCategory = 'persona' | 'constraints' | 'task' | 'requirements' | 'tech'
 
 export function PromptBuilder() {
     // State
     const [persona, setPersona] = useState("")
-    const [context, setContext] = useState("")
-    const [selectedTech, setSelectedTech] = useState<string[]>([])
-    const [customConstraints, setCustomConstraints] = useState<string[]>([])
+    const [constraints, setConstraints] = useState("")
+    const [task, setTask] = useState("")
+    const [requirements, setRequirements] = useState("")
+    const [tech, setTech] = useState("")
     const [uploadedFiles, setUploadedFiles] = useState<FileMetadata[]>([])
     const [customExamples, setCustomExamples] = useState("")
     const [analysisStatus, setAnalysisStatus] = useState<'idle' | 'analyzing' | 'complete'>('idle')
     const [visualContextSuggestions, setVisualContextSuggestions] = useState<VisualContextSuggestions | null>(null)
-    const [selectedSuggestions, setSelectedSuggestions] = useState<{
-        context: Set<number>
-        persona: Set<number>
-        techStack: Set<number>
-    }>({
-        context: new Set(),
+    const [selectedSuggestions, setSelectedSuggestions] = useState<Record<SuggestionCategory, Set<number>>>({
         persona: new Set(),
-        techStack: new Set()
+        constraints: new Set(),
+        task: new Set(),
+        requirements: new Set(),
+        tech: new Set()
     })
 
     // Handlers
-    const handleToggleTech = (tech: string) => {
-        setSelectedTech(prev =>
-            prev.includes(tech)
-                ? prev.filter(t => t !== tech)
-                : [...prev, tech]
-        )
-    }
-
-    const handleAddConstraint = (constraint: string) => {
-        setCustomConstraints(prev => [...prev, constraint])
-    }
-
-    const handleRemoveConstraint = (index: number) => {
-        setCustomConstraints(prev => prev.filter((_, i) => i !== index))
-    }
-
     const handleFilesUpload = async (files: File[]) => {
         const fileMetadata = files.map(f => ({ name: f.name, size: f.size }))
         setUploadedFiles(prev => [...prev, ...fileMetadata])
@@ -64,7 +50,6 @@ export function PromptBuilder() {
         const imageFile = files.find(f => f.type.startsWith('image/'))
 
         if (!imageFile) {
-            // No image to analyze, skip API call
             return
         }
 
@@ -72,9 +57,11 @@ export function PromptBuilder() {
         setAnalysisStatus('analyzing')
         setVisualContextSuggestions(null)
         setSelectedSuggestions({
-            context: new Set(),
             persona: new Set(),
-            techStack: new Set()
+            constraints: new Set(),
+            task: new Set(),
+            requirements: new Set(),
+            tech: new Set()
         })
 
         try {
@@ -83,7 +70,6 @@ export function PromptBuilder() {
                 const reader = new FileReader()
                 reader.onload = () => {
                     const result = reader.result as string
-                    // Remove data URL prefix (e.g., "data:image/png;base64,")
                     const base64Data = result.split(',')[1]
                     resolve(base64Data)
                 }
@@ -112,7 +98,6 @@ export function PromptBuilder() {
         } catch (error) {
             console.error('Analysis error:', error)
             setAnalysisStatus('idle')
-            // Optionally show error to user - for now just log it
         }
     }
 
@@ -120,119 +105,101 @@ export function PromptBuilder() {
         setUploadedFiles(prev => prev.filter((_, i) => i !== index))
     }
 
-    const handleToggleSuggestion = (category: 'context' | 'persona' | 'techStack', index: number, suggestion: string) => {
+    const handleToggleSuggestion = (category: SuggestionCategory, index: number, suggestion: string) => {
+        const setterMap: Record<SuggestionCategory, React.Dispatch<React.SetStateAction<string>>> = {
+            persona: setPersona,
+            constraints: setConstraints,
+            task: setTask,
+            requirements: setRequirements,
+            tech: setTech,
+        }
+
         setSelectedSuggestions(prev => {
             const newSet = new Set(prev[category])
             const isSelected = newSet.has(index)
+            const setter = setterMap[category]
 
             if (isSelected) {
                 newSet.delete(index)
-                // Remove suggestion from corresponding field
-                if (category === 'context') {
-                    setContext(prevContext => {
-                        const lines = prevContext.split('\n').filter(line => line.trim() !== suggestion.trim())
-                        return lines.join('\n')
-                    })
-                } else if (category === 'persona') {
-                    setPersona(prevPersona => {
-                        const lines = prevPersona.split('\n').filter(line => line.trim() !== suggestion.trim())
-                        return lines.join('\n')
-                    })
-                } else if (category === 'techStack') {
-                    // Check if it's a preset tech or custom constraint
-                    const PRESET_TECH = ["HTML", "CSS", "Vanilla JS", "TypeScript", "React", "Vue", "Next.js", "Tailwind CSS", "Node.js", "Python"]
-                    if (PRESET_TECH.includes(suggestion)) {
-                        setSelectedTech(prev => prev.filter(t => t !== suggestion))
-                    } else {
-                        setCustomConstraints(prev => prev.filter(c => c !== suggestion))
-                    }
-                }
+                setter(prevVal => {
+                    const lines = prevVal.split('\n').filter(line => line.trim() !== suggestion.trim())
+                    return lines.join('\n')
+                })
             } else {
                 newSet.add(index)
-                // Add suggestion to corresponding field
-                if (category === 'context') {
-                    setContext(prevContext => {
-                        const trimmed = prevContext.trim()
-                        // Check if suggestion already exists to prevent duplicates
-                        const lines = trimmed.split('\n').map(l => l.trim())
-                        if (lines.includes(suggestion.trim())) {
-                            return trimmed
-                        }
-                        return trimmed ? `${trimmed}\n${suggestion}` : suggestion
-                    })
-                } else if (category === 'persona') {
-                    setPersona(prevPersona => {
-                        const trimmed = prevPersona.trim()
-                        // Check if suggestion already exists to prevent duplicates
-                        const lines = trimmed.split('\n').map(l => l.trim())
-                        if (lines.includes(suggestion.trim())) {
-                            return trimmed
-                        }
-                        return trimmed ? `${trimmed}\n${suggestion}` : suggestion
-                    })
-                } else if (category === 'techStack') {
-                    // Check if it's a preset tech or custom constraint
-                    const PRESET_TECH = ["HTML", "CSS", "Vanilla JS", "TypeScript", "React", "Vue", "Next.js", "Tailwind CSS", "Node.js", "Python"]
-                    if (PRESET_TECH.includes(suggestion)) {
-                        setSelectedTech(prev => prev.includes(suggestion) ? prev : [...prev, suggestion])
-                    } else {
-                        setCustomConstraints(prev => prev.includes(suggestion) ? prev : [...prev, suggestion])
+                setter(prevVal => {
+                    const trimmed = prevVal.trim()
+                    const lines = trimmed.split('\n').map(l => l.trim())
+                    if (lines.includes(suggestion.trim())) {
+                        return trimmed
                     }
-                }
+                    return trimmed ? `${trimmed}\n${suggestion}` : suggestion
+                })
             }
 
             return { ...prev, [category]: newSet }
         })
     }
 
-    // Derived State: Generated Prompt (using useMemo to prevent hydration mismatch)
+    // Derived State: Generated Prompt
     const finalPrompt = useMemo(() => {
-        const parts = []
+        const systemParts: string[] = []
+        const userParts: string[] = []
 
-        // Section 1: Context
-        if (context.trim()) {
-            parts.push(`## 1. Context\n${context.trim()}`)
-        } else {
-            parts.push(`## 1. Context\n(No information provided yet)`)
-        }
-
-        // Section 2: Persona
+        // --- SYSTEM PROMPT ---
         if (persona.trim()) {
-            parts.push(`## 2. Persona\n${persona.trim()}`)
+            systemParts.push(`## Persona\n${persona.trim()}`)
         } else {
-            parts.push(`## 2. Persona\n(No information provided yet)`)
+            systemParts.push(`## Persona\n(No information provided yet)`)
         }
 
-        // Section 3: Tech Stack & Constraints
-        if (selectedTech.length > 0 || customConstraints.length > 0) {
-            parts.push(`## 3. Tech Stack & Constraints`)
-            if (selectedTech.length > 0) {
-                parts.push(`**Tech Stack:**\n${selectedTech.map(t => `- ${t}`).join('\n')}`)
-            }
-
-            if (customConstraints.length > 0) {
-                parts.push(`**Requirements:**\n${customConstraints.map(c => `- ${c}`).join('\n')}`)
-            }
+        if (constraints.trim()) {
+            systemParts.push(`## Constraints\n${constraints.trim()}`)
         } else {
-            parts.push(`## 3. Tech Stack & Constraints\n(No information provided yet)`)
+            systemParts.push(`## Constraints\n(No information provided yet)`)
         }
 
-        // Section 4: Examples
+        // --- USER PROMPT ---
+        if (task.trim()) {
+            userParts.push(`## Task\n${task.trim()}`)
+        } else {
+            userParts.push(`## Task\n(No information provided yet)`)
+        }
+
+        if (requirements.trim()) {
+            userParts.push(`## Requirements\n${requirements.trim()}`)
+        } else {
+            userParts.push(`## Requirements\n(No information provided yet)`)
+        }
+
+        if (tech.trim()) {
+            userParts.push(`## Tech\n${tech.trim()}`)
+        } else {
+            userParts.push(`## Tech\n(No information provided yet)`)
+        }
+
+        // Examples
         if (uploadedFiles.length > 0 || customExamples.trim()) {
-            parts.push(`## 4. Examples`)
+            const exParts: string[] = []
             if (customExamples.trim()) {
-                parts.push(`**Manual Snippets:**\n${customExamples.trim()}`)
+                exParts.push(`**Code Snippets:**\n${customExamples.trim()}`)
             }
-
             if (uploadedFiles.length > 0) {
-                parts.push(`**Uploaded Files:**\n${uploadedFiles.map(f => `- ${f.name}`).join('\n')}`)
+                exParts.push(`**Uploaded Files:**\n${uploadedFiles.map(f => `- ${f.name}`).join('\n')}`)
             }
+            userParts.push(`## Examples\n${exParts.join('\n\n')}`)
         } else {
-            parts.push(`## 4. Examples\n(No information provided yet)`)
+            userParts.push(`## Examples\n(No information provided yet)`)
         }
+
+        // Assemble final prompt
+        const parts: string[] = []
+        parts.push(`# System Prompt\n\n${systemParts.join('\n\n')}`)
+        parts.push(`---`)
+        parts.push(`# User Prompt\n\n${userParts.join('\n\n')}`)
 
         return parts.join('\n\n')
-    }, [persona, context, selectedTech, customConstraints, uploadedFiles, customExamples])
+    }, [persona, constraints, task, requirements, tech, uploadedFiles, customExamples])
 
 
     return (
@@ -248,22 +215,20 @@ export function PromptBuilder() {
                     <h2 className="text-[1.75rem] font-bold tracking-tight leading-none">Input</h2>
                 </div>
 
-                <SectionContext
-                    value={context}
-                    onChange={setContext}
+                <SectionSystemPrompt
+                    persona={persona}
+                    onPersonaChange={setPersona}
+                    constraints={constraints}
+                    onConstraintsChange={setConstraints}
                 />
 
-                <SectionPersona
-                    value={persona}
-                    onChange={setPersona}
-                />
-
-                <SectionConstraints
-                    selectedTech={selectedTech}
-                    onToggleTech={handleToggleTech}
-                    customConstraints={customConstraints}
-                    onAddConstraint={handleAddConstraint}
-                    onRemoveConstraint={handleRemoveConstraint}
+                <SectionUserPrompt
+                    task={task}
+                    onTaskChange={setTask}
+                    requirements={requirements}
+                    onRequirementsChange={setRequirements}
+                    tech={tech}
+                    onTechChange={setTech}
                 />
 
                 <SectionExamples

@@ -1,0 +1,58 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Textarea } from "./ui/textarea"
+
+interface SectionSystemPromptProps {
+    persona: string
+    onPersonaChange: (value: string) => void
+    constraints: string
+    onConstraintsChange: (value: string) => void
+}
+
+export function SectionSystemPrompt({
+    persona,
+    onPersonaChange,
+    constraints,
+    onConstraintsChange
+}: SectionSystemPromptProps) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-xl">1. System Prompt</CardTitle>
+                <CardDescription>
+                    Define reusable AI behavior: expertise and rules that apply across tasks.
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+
+                {/* Persona */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Persona</span>
+                        <span className="block text-sm text-muted-foreground">Define AI domain expertise, role, and perspective.</span>
+                    </div>
+                    <Textarea
+                        placeholder="You are a senior frontend developer specializing in React and TypeScript..."
+                        className="min-h-[100px] resize-none focus-visible:ring-primary/50"
+                        value={persona}
+                        onChange={(e) => onPersonaChange(e.target.value)}
+                    />
+                </div>
+
+                {/* Constraints */}
+                <div className="space-y-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Constraints</span>
+                        <span className="block text-sm text-muted-foreground">Define behavioral rules, quality standards, things to always/never do.</span>
+                    </div>
+                    <Textarea
+                        placeholder="- Prioritize readability and accessibility&#10;- Handle errors gracefully&#10;- Follow WCAG 2.1 AA standards"
+                        className="min-h-[100px] resize-none focus-visible:ring-primary/50"
+                        value={constraints}
+                        onChange={(e) => onConstraintsChange(e.target.value)}
+                    />
+                </div>
+
+            </CardContent>
+        </Card>
+    )
+}

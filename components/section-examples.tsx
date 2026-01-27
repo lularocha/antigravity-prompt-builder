@@ -1,6 +1,6 @@
 "use client"
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { Textarea } from "./ui/textarea"
 import { Badge } from "./ui/badge"
 import { Upload, FileText, BrainCircuit, X } from "lucide-react"
@@ -12,10 +12,14 @@ interface FileMetadata {
 }
 
 interface VisualContextSuggestions {
-    context: string[]
     persona: string[]
-    techStack: string[]
+    constraints: string[]
+    task: string[]
+    requirements: string[]
+    tech: string[]
 }
+
+type SuggestionCategory = 'persona' | 'constraints' | 'task' | 'requirements' | 'tech'
 
 interface SectionExamplesProps {
     uploadedFiles: FileMetadata[]
@@ -25,13 +29,17 @@ interface SectionExamplesProps {
     onCustomExamplesChange: (value: string) => void
     analysisStatus: 'idle' | 'analyzing' | 'complete'
     visualContextSuggestions: VisualContextSuggestions | null
-    selectedSuggestions: {
-        context: Set<number>
-        persona: Set<number>
-        techStack: Set<number>
-    }
-    onToggleSuggestion: (category: 'context' | 'persona' | 'techStack', index: number, suggestion: string) => void
+    selectedSuggestions: Record<SuggestionCategory, Set<number>>
+    onToggleSuggestion: (category: SuggestionCategory, index: number, suggestion: string) => void
 }
+
+const SUGGESTION_GROUPS: { key: SuggestionCategory; label: string }[] = [
+    { key: 'persona', label: 'Persona' },
+    { key: 'constraints', label: 'Constraints' },
+    { key: 'task', label: 'Task' },
+    { key: 'requirements', label: 'Requirements' },
+    { key: 'tech', label: 'Tech' },
+]
 
 export function SectionExamples({
     uploadedFiles,
@@ -60,7 +68,7 @@ export function SectionExamples({
     return (
         <Card>
             <CardHeader>
-                <CardTitle className="text-xl -mb-4">4. Examples</CardTitle>
+                <CardTitle className="text-xl -mb-4">3. Examples</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
 
@@ -133,7 +141,7 @@ export function SectionExamples({
                     {!visualContextSuggestions && (
                         <>
                             <div className="text-sm text-white">
-                                Upload examples to have the agent extract patterns and suggest improvements for Context, Persona, and Tech Stack.
+                                Upload examples to have the agent extract patterns and suggest improvements for Persona, Constraints, Task, Requirements, and Tech.
                             </div>
                             <div className="text-sm text-muted-foreground italic">
                                 Suggestions will appear here once AI analysis is completed.
@@ -149,54 +157,24 @@ export function SectionExamples({
                     )}
                     {visualContextSuggestions && (
                         <div className="space-y-4 pt-2">
-                            <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Context</h5>
-                                <div className="space-y-2">
-                                    {visualContextSuggestions.context.map((s, i) => (
-                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedSuggestions.context.has(i)}
-                                                onChange={() => onToggleSuggestion('context', i, s)}
-                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
-                                            />
-                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
-                                        </label>
-                                    ))}
+                            {SUGGESTION_GROUPS.map(({ key, label }) => (
+                                <div key={key}>
+                                    <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">{label}</h5>
+                                    <div className="space-y-2">
+                                        {visualContextSuggestions[key].map((s, i) => (
+                                            <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedSuggestions[key].has(i)}
+                                                    onChange={() => onToggleSuggestion(key, i, s)}
+                                                    className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                                />
+                                                <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                            </label>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Persona</h5>
-                                <div className="space-y-2">
-                                    {visualContextSuggestions.persona.map((s, i) => (
-                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedSuggestions.persona.has(i)}
-                                                onChange={() => onToggleSuggestion('persona', i, s)}
-                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
-                                            />
-                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <h5 className="text-xs font-semibold text-blue-300 uppercase tracking-wider mb-2">Tech Stack</h5>
-                                <div className="space-y-2">
-                                    {visualContextSuggestions.techStack.map((s, i) => (
-                                        <label key={i} className="flex items-start gap-2 cursor-pointer group">
-                                            <input
-                                                type="checkbox"
-                                                checked={selectedSuggestions.techStack.has(i)}
-                                                onChange={() => onToggleSuggestion('techStack', i, s)}
-                                                className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
-                                            />
-                                            <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
-                                        </label>
-                                    ))}
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     )}
                 </div>

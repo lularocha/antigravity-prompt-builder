@@ -6,9 +6,11 @@ const anthropic = new Anthropic({
 })
 
 interface VisualContextSuggestions {
-    context: string[]
     persona: string[]
-    techStack: string[]
+    constraints: string[]
+    task: string[]
+    requirements: string[]
+    tech: string[]
 }
 
 export async function POST(request: NextRequest) {
@@ -50,18 +52,22 @@ export async function POST(request: NextRequest) {
 
 Return ONLY a valid JSON object (no markdown, no code blocks) with this exact structure:
 {
-  "context": ["suggestion 1", "suggestion 2", "suggestion 3", "suggestion 4"],
   "persona": ["suggestion 1", "suggestion 2"],
-  "techStack": ["suggestion 1", "suggestion 2", "suggestion 3"]
+  "constraints": ["suggestion 1", "suggestion 2"],
+  "task": ["suggestion 1", "suggestion 2"],
+  "requirements": ["suggestion 1", "suggestion 2", "suggestion 3", "suggestion 4"],
+  "tech": ["suggestion 1", "suggestion 2", "suggestion 3"]
 }
 
 Guidelines:
-- context: 4 suggestions total:
-  - 2 describing what is being built (e.g., "Building a dashboard with data cards", "E-commerce product listing page")
-  - 1 describing the visual style/look and feel (e.g., "Modern minimalist design", "Clean corporate aesthetic", "Bold colorful interface")
-  - 1 describing layout patterns observed (e.g., "Card-based grid layout", "Sidebar navigation with main content area")
-- persona: 2 suggestions for the ideal developer profile (e.g., "Frontend developer experienced with React", "UI/UX focused developer")
-- techStack: 2-3 specific technologies visible or recommended (e.g., "React", "Tailwind CSS", "Chart.js")
+- persona: 2 suggestions for the ideal developer profile/expertise (e.g., "Senior frontend developer with React and data visualization experience", "UI/UX focused developer experienced with dashboard design")
+- constraints: 2 suggestions for behavioral rules or quality standards (e.g., "Follow accessibility standards for data-heavy interfaces", "Ensure responsive design across all breakpoints")
+- task: 2 suggestions describing what is being built (e.g., "Build a real-time analytics dashboard", "Create an e-commerce product listing page with filters")
+- requirements: 4 suggestions for functional specifications:
+  - 2 describing specific features visible in the design (e.g., "Display metrics in card grid layout", "Include date range picker for data filtering")
+  - 1 describing the visual style/look and feel (e.g., "Modern minimalist design with subtle shadows", "Dark theme with accent color highlights")
+  - 1 describing layout patterns observed (e.g., "Sidebar navigation with main content area", "Full-width hero section with grid below")
+- tech: 2-3 specific technologies visible or recommended (e.g., "React", "Tailwind CSS", "Chart.js")
 
 Keep suggestions concise (under 80 characters each). Focus on what you actually see in the image.`,
                         },
