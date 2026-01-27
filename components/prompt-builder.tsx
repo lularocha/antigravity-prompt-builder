@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { ArrowUpRight, ArrowDownRight } from "lucide-react"
 import { SectionSystemPrompt } from "./section-system-prompt"
 import { SectionUserPrompt } from "./section-user-prompt"
 import { SectionExamples } from "./section-examples"
@@ -227,12 +226,7 @@ export function PromptBuilder() {
             {/* Left Column: Input Sections */}
             <div className="space-y-6 overflow-y-auto pr-2 custom-scrollbar">
 
-                <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-0 bg-primary/20 rounded-lg flex items-center">
-                        <ArrowDownRight className="w-8 h-8 text-white" />
-                    </div>
-                    <h2 className="text-[1.75rem] font-bold tracking-tight leading-none">Input</h2>
-                </div>
+                <h2 className="text-[1.75rem] font-bold tracking-tight leading-none mb-2">Define what you want to build</h2>
 
                 <SectionSystemPrompt
                     persona={persona}
@@ -267,12 +261,7 @@ export function PromptBuilder() {
             {/* Right Column: Preview */}
             <div className="lg:sticky lg:top-8 h-fit space-y-6">
 
-                <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-0 bg-primary/20 rounded-lg flex items-center">
-                        <ArrowUpRight className="w-8 h-8 text-white" />
-                    </div>
-                    <h2 className="text-[1.75rem] font-bold tracking-tight leading-none">Output</h2>
-                </div>
+                <h2 className="text-[1.75rem] font-bold tracking-tight leading-none mb-2">Get your project's prompts</h2>
 
                 <GeneratedPrompt prompt={finalPrompt} />
             </div>
