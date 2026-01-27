@@ -7,14 +7,46 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, React.TextareaHTMLAttributes<HTMLTextAreaElement>>(
-    ({ className, ...props }, ref) => {
+    ({ className, value, placeholder, ...props }, ref) => {
+        const internalRef = React.useRef<HTMLTextAreaElement>(null)
+
+        // Merge refs
+        React.useImperativeHandle(ref, () => internalRef.current!)
+
+        // Auto-resize function
+        const adjustHeight = React.useCallback(() => {
+            const element = internalRef.current
+            if (!element) return
+
+            // Reset height to auto to get the correct scrollHeight
+            element.style.height = 'auto'
+
+            // Calculate minimum height based on placeholder if value is empty
+            if (!value && placeholder) {
+                const lineCount = placeholder.split('\n').length
+                const lineHeight = 20 // approximate line height in pixels
+                const padding = 16 // py-2 = 8px top + 8px bottom
+                const minHeight = Math.max(80, lineCount * lineHeight + padding)
+                element.style.height = `${Math.max(element.scrollHeight, minHeight)}px`
+            } else {
+                element.style.height = `${element.scrollHeight}px`
+            }
+        }, [value, placeholder])
+
+        // Adjust on mount and when value/placeholder changes
+        React.useEffect(() => {
+            adjustHeight()
+        }, [adjustHeight])
+
         return (
             <textarea
                 className={cn(
-                    "flex min-h-[80px] w-full rounded-md bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                    "flex min-h-[80px] w-full rounded-md bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 overflow-hidden resize-none",
                     className
                 )}
-                ref={ref}
+                ref={internalRef}
+                value={value}
+                placeholder={placeholder}
                 {...props}
             />
         )
