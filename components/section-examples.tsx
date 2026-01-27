@@ -156,25 +156,55 @@ export function SectionExamples({
                         </>
                     )}
                     {visualContextSuggestions && (
-                        <div className="space-y-4 pt-2">
-                            {SUGGESTION_GROUPS.map(({ key, label }) => (
-                                <div key={key}>
-                                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{label}</h4>
-                                    <div className="space-y-2">
-                                        {visualContextSuggestions[key].map((s, i) => (
-                                            <label key={i} className="flex items-start gap-2 cursor-pointer group">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={selectedSuggestions[key].has(i)}
-                                                    onChange={() => onToggleSuggestion(key, i, s)}
-                                                    className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
-                                                />
-                                                <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
-                                            </label>
-                                        ))}
+                        <div className="space-y-6 pt-2">
+                            {/* System Prompt Section */}
+                            <div className="space-y-4">
+                                <h3 className="text-[1rem] font-bold text-white">1. System Prompt</h3>
+                                {SUGGESTION_GROUPS.filter(({ key }) => key === 'persona' || key === 'constraints').map(({ key, label }) => (
+                                    <div key={key}>
+                                        <h4 className="text-xl font-semibold text-blue-300 mb-2">{label}</h4>
+                                        <div className="space-y-2">
+                                            {visualContextSuggestions[key].map((s, i) => (
+                                                <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedSuggestions[key].has(i)}
+                                                        onChange={() => onToggleSuggestion(key, i, s)}
+                                                        className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                                    />
+                                                    <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                                </label>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+
+                            {/* Separator */}
+                            <div className="border-t border-white/10"></div>
+
+                            {/* User Prompt Section */}
+                            <div className="space-y-4">
+                                <h3 className="text-[1rem] font-bold text-white">2. User Prompt</h3>
+                                {SUGGESTION_GROUPS.filter(({ key }) => key === 'task' || key === 'requirements' || key === 'tech').map(({ key, label }) => (
+                                    <div key={key}>
+                                        <h4 className="text-xl font-semibold text-blue-300 mb-2">{label}</h4>
+                                        <div className="space-y-2">
+                                            {visualContextSuggestions[key].map((s, i) => (
+                                                <label key={i} className="flex items-start gap-2 cursor-pointer group">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedSuggestions[key].has(i)}
+                                                        onChange={() => onToggleSuggestion(key, i, s)}
+                                                        className="mt-0.5 w-4 h-4 rounded border-gray-600 bg-white/10 text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
+                                                    />
+                                                    <span className="text-sm text-muted-foreground group-hover:text-white transition-colors">{s}</span>
+                                                </label>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
                 </div>

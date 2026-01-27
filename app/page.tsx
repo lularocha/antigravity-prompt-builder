@@ -11,10 +11,10 @@ export default function Home() {
                         Prompt Builder
                     </h1>
                     <p className="text-lg text-muted-foreground max-w-[1200px]">
-                        Create high-quality AI prompts with System Prompt (Persona + Constraints) and User Prompt (Task + Requirements + Tech + Examples).
+                        Create high-quality AI prompts with (System Prompt + User Prompt).
                     </p>
                     <p className="text-sm text-[#ffaa00] !mt-2">
-                        Latest update: January 25, 2026
+                        Latest update: January 27, 2026
                     </p>
                 </div>
 
